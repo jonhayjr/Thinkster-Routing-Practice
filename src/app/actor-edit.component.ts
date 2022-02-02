@@ -1,5 +1,6 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { ActorListService } from './actor-list/actor-list.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   template: `
@@ -21,7 +22,7 @@ import { ActorListService } from './actor-list/actor-list.service';
 
   <button type="submit" class="btn mr-2 btn-primary">Save</button>
 
-  <a>Cancel</a>
+  <a routerLink="/actors">Cancel</a>
 
   
 </form>
@@ -32,16 +33,18 @@ import { ActorListService } from './actor-list/actor-list.service';
 export class ActorEditComponent  {
   actor
   
-  constructor(private actorListService: ActorListService) {
+  constructor(private actorListService: ActorListService, private route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
-    let id = 0;
-    this.actorListService.getActor(id)
-    .subscribe(actor => {
-      this.actor = actor;
-    })
+    this.route.paramMap
+      .subscribe(params => {
+        this.actorListService.getActor(+params.get('id'))
+        .subscribe(actor => {
+          this.actor = actor;
+        })
+      })
   }
 
 

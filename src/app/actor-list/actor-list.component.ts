@@ -17,9 +17,14 @@ export class ActorListComponent  {
 
   ngOnInit() {
       // if show details is in query params
-        this.showDetails = true;
-      // else 
-        this.showDetails = false;
+      this.router.queryParamMap
+      .subscribe(qps => {
+        if (qps.has('showDetails')) {
+          this.showDetails = true;
+        } else {
+          this.showDetails = false;
+        }
+      })
 
     this.actorListService.getActorList()
     .subscribe(actors => {
